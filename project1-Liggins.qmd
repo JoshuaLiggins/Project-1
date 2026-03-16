@@ -1,0 +1,108 @@
+---
+title: "Honduras"
+author: "Joshua Liggins"
+format: docx
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+library(gapminder)
+```
+
+```{r}
+data(gapminder)
+```
+
+```{r}
+country_honduras <- gapminder %>%
+  filter(country == "Honduras")
+country_honduras
+
+country_usa <- gapminder %>%
+  filter(country == "United States")
+country_usa
+```
+
+# The Life Expectancy of Honduras Compared to the USA
+
+Honduras is a lower-middle-income country located in Central America, bordered by Guatemala, El Salvador, and Nicaragua, with coastlines along both the Caribbean Sea and the Pacific Ocean. With a population exceeding 10 million people, the country continues to face structural challenges related to poverty, inequality, and limited access to healthcare, all of which influenced population health outcomes (The Global Economy, 2023). Between 2002 and 2007, life expectancy in Honduras averaged approximately 70 years, compared to about 78 years in the United States during the same period (The Global Economy, 2023). This disparity reflects broader differences in economic development, healthcare infrastructure, and public health investment between the two nations, Life expectancy is widely recognized as a key indicator of societal well-being because it captures the cumulative effects of social, economic, and environmental conditions on population health (Encyclopedia, Britannica, 2024).
+
+```{r}
+mean_lifeExp <- mean(country_honduras$lifeExp)
+sd_lifeExp <- sd(country_honduras$lifeExp)
+n_years <- length(unique(country_honduras$year))
+
+```
+
+```{r}
+mean_lifeExp <- mean(country_usa$lifeExp)
+sd_lifeExp <- sd(country_usa$lifeExp)
+n_years <- length(unique(country_usa$year))
+```
+
+A comparative analysis of life expectancy using the gapminder dataset reveals notable differences between Honduras and the United States, reflecting broader disparities in economic development, healthcare systems, and social determinants of health. Honduras has an average life expectancy of approximately `r round(mean(country_honduras$lifeExp), 1)` years across `r length(unique(country_honduras$year))` recorded years, with a standard deviation of `r round(sd(country_honduras$lifeExp), 1)`, indicating moderate variation over time. In contrast, the United States demonstrates a higher average life expectancy of about `r round(mean(country_usa$lifeExp), 1)` years across `r length(unique(country_usa$years))` years, accompanied by a smaller standard deviation of `r round(sd(country_usa$lifeExp), 1)`, suggesting more consistent health outcomes. These differences highlight persistent global health inequities, as higher-income countries often benefit from advanced medical technology, stronger public health infrastructure, and greater healthcare accessibility. Overall, while both countries have experienced improvements in longevity, the gap underscores the continuing influence of socioeconomic factors on population health.
+
+## Visualizations
+
+```{r}
+library(dplyr)
+compare_data <- gapminder %>%
+  filter(country %in% c("Honduras", "United States"))
+
+ggplot(compare_data, aes(x = year, y = lifeExp, color = country)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Life Expectancy Over Time: Honduras vs United States", 
+    x = "Year", 
+    y = "Life Expectancy (years)",
+    color = "country"
+  ) 
+```
+
+The line graph illustrates life expectancy trends from 1952 to 2007 for Honduras and the United States, revealing clear differences in population health outcomes between the two countries. Both nations show a steady upward trajectory, indicating improvements in medical care, public health initiatives, and overall living conditions over time. However, the United States consistently maintains a higher life expectancy throughout the entire period, suggesting stronger healthcare infrastructure, higher economic development, and greater access to preventative services. Honduras demonstrates substantial progress, with life expectancy increasing markedly across the decades, which reflects advancements in disease prevention and health resources despite economic limitations. The persistent gap between the two countries highlights ongoing global health disparities and underscores the influence of socioeconomic factors on longevity.
+
+```{r}
+ggplot(compare_data,
+       aes(x = gdpPercap,
+           y = lifeExp,
+           color = country)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Health vs. Wealth: Honduras and United States", 
+    x = "GDP Per Capita (Wealth)",
+    y = "Life Expectancy (Health)",
+    color = "country"
+  )
+```
+
+The scatter plot illustrates the relationship between wealth (GDP per capita) and health (life expectancy) for Honduras and the United States, showing a clear positive correlation in which higher income levels are associated with longer life expectancy. The United States appears consistently further to the right and higher on the graph, indicating both greater economic prosperity and better health outcomes across the observed years. In contrast, Honduras clusters toward the lower left portion of the plot, reflecting lower GDP per capita and shorter average life expectancy, although the upward pattern suggests gradual improvement over time. The fitted regression lines reinforce this trend, demonstrating that as wealth increases, life expectancy tends to rise in both countries. Overall, the graph highlights the strong connection between economic resources and population health while underscoring persistent global disparities between higher and lower income nations.
+
+## Data Quality and Limitations
+
+Extensive research demonstrates a strong relationship between economic prosperity and longevity. Early work by Preston (1975) established that higher national income levels are closely associated with reductions in mortality. More recent scholarship reinforces this connection, suggesting that wealthier nations are better positioned to invest in healthcare systems, disease prevention, and improved living standards (Cutler et al., 2006; Ray & Linden, 2018). Similarly, Deaton (2013) argues that advances in income and technology have enabled many countries to experience substantial improvements in health, although these gains have not been evenly distributed. Income inequality further contributes to health disparities, as populations in more unequal societies often experience worse health outcomes and higher mortality rates (Wilkinson & Pickett, 2006; Kondo et al., 2009). Economic growth and health are also mutually reinforcing; healthier populations tend to be more productive, supporting long-term economic development (Bloom et al., 2004). Together, these findings help explain the persistent life expectancy gap between Honduras and the United States. Healthcare spending and environmental conditions also play a significant role in shaping population health. Jakovljevic et al. (2021) found that higher GDP per capita is strongly associated with increased health expenditures and longer life expectancy, further emphasizing the importance of economic resources in sustaining health improvements. Although Honduras has demonstrated steady progress in longevity over time, structural limitations in healthcare access and financial resources may slow the pace of improvement relative to high-income countries. These patterns highlight the complex interaction between wealth, inequality, and health outcomes on a global scale. While global datasets provide valuable insight into population health trends, several data quality limitations must be considered when interpreting these findings. Life expectancy is commonly used as a summary indicator; however, it represents a snapshot of age-specific mortality and may not fully capture emerging risk factors that influence future health trajectories (GBD 2021 Diseases and Injuries Collaborators, 2024). Countries without well-functioning vital registration systems often rely on alternative data sources such as verbal autopsies and statistical modeling, which can introduce uncertainty into mortality estimates and cross-national comparisons (GBD 2021 Diseases and Injuries Collaborators, 2024). Furthermore, variations in data definitions, sampling procedures, and reporting practices may limit comparability across countries, underscoring the importance of standardized measurement approaches in global health research (Feigin et al., 2021). The Gapminder dataset, which compiles internationally recognized data sources, is well suited for identifying broad trends in life expectancy; however, caution should be exercised when drawing precise conclusions from cross-country comparisons (Gapminder, n.d.).
+
+## Reflection
+
+Analysis of the Gapminder data underscores the value of quantitative tools in understanding global health disparities. The findings suggest that countries with stronger economies and healthcare infrastructures tend to achieve higher life expectancy, reinforcing the well-documented relationship between wealth and health. One notable observation is the extent of progress Honduras has made despite economic constraints; life expectancy has increased steadily over time, indicating that targeted public health interventions and development efforts can yield meaningful improvements even in lower-income settings. This aligns with Deaton’s (2013) assertion that global health has improved dramatically, though unevenly. The analysis also raises important questions for future research. Given the limitations of cross-national datasets, further investigation could explore how factors such as education, healthcare expenditure, environmental conditions, and income inequality contribute to longevity differences. Additionally, incorporating more recent data or qualitative insights may provide a deeper understanding of how policy changes and social determinants shape population health outcomes. Continued research in this area is essential for informing strategies aimed at reducing global health disparities and promoting equitable improvements in life expectancy.
+
+## References
+
+1.  Bloom, D. E., Canning, D., & Sevilla, J. (2004). The effect of health on economic growth: A production function approach. World Development, 32(1), 1–13. https://doi.org/10.1016/j.worlddev.2003.07.002
+2.  Cutler, D. M., Deaton, A., & Lleras-Muney, A. (2006). The determinants of mortality. Journal of Economic Perspectives, 20(3), 97–120. https://doi.org/10.1257/jep.20.3.97
+3.  Deaton, A. (2013). The great escape: Health, wealth, and the origins of inequality. Princeton University Press.
+4.  Encyclopaedia Britannica. (2024). Life expectancy. https://www.britannica.com/science/life-expectancy
+5.  Feigin, V. L., Vos, T., & Nichols, E., et al. (2021). Cross-national comparisons of health indicators require standardized definitions and common data sources. Archives of Public Health, 79(1). https://doi.org/10.1186/s13690-021-00734-w
+6.  GBD 2021 Diseases and Injuries Collaborators. (2024). Global incidence, prevalence, years lived with disability (YLDs), disability-adjusted life-years (DALYs), and healthy life expectancy (HALE) for 371 diseases and injuries in 204 countries and territories, 1990–2021: A systematic analysis. The Lancet. https://doi.org/10.1016/S0140-6736(24)00457-3
+7.  Gapminder. (n.d.). Life expectancy at birth documentation. https://www.gapminder.org/data/documentation/gd004/
+8.  Jakovljevic, M., Lamnisos, D., & Westerman, R., et al. (2021). Impact of environment, life expectancy, and real GDP per capita on health expenditures: Evidence from the EU member states. International Journal of Environmental Research and Public Health, 18(24), 13176. https://doi.org/10.3390/ijerph182413176
+9.  Kondo, N., Sembajwe, G., Kawachi, I., van Dam, R. M., Subramanian, S. V., & Yamagata, Z. (2009). Income inequality, mortality, and self-rated health: Meta-analysis of multilevel studies. BMJ, 339, b4471. https://doi.org/10.1136/bmj.b4471
+10. Preston, S. H. (1975). The changing relation between mortality and level of economic development. Population Studies, 29(2), 231–248. https://doi.org/10.1080/00324728.1975.10410201
+11. Ray, D., & Linden, M. (2018). Health, inequality and income: A global study using simultaneous model. Journal of Economic Structures, 7(22). https://doi.org/10.1186/s40008-018-0121-3
+12. The Global Economy. (2023). Honduras: Life expectancy. https://www.theglobaleconomy.com/Honduras/life_expectancy/
+13. Wilkinson, R. G., & Pickett, K. (2006). Income inequality and population health: A review and explanation of the evidence. Social Science & Medicine, 62(7), 1768–1784. https://doi.org/10.1016/j.socscimed.2005.08.036
